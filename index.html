@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+
+<!-- SEO Meta Tags -->
+<title>BCRP — Beaufort County Republican Party</title>
+<meta property="og:title" content="BCRP — Beaufort County Republican Party" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="BCRP — Beaufort County Republican Party" />
+<!-- End SEO Meta Tags -->
+
+<script data-field-replace>
+(function(){
+  var params=new URLSearchParams(window.location.search);
+  var fields={};
+  var paramMap={
+    'first_name':'firstName','last_name':'lastName','full_name':'fullName',
+    'email':'email','phone':'phone','company':'company',
+    'city':'city','state':'state','country':'country'
+  };
+  var skipTags={'SCRIPT':1,'STYLE':1,'NOSCRIPT':1,'TEXTAREA':1,'CODE':1,'PRE':1};
+  var hasUrlFields=false;
+  for(var p in paramMap){
+    var v=params.get(p);
+    if(v){fields[paramMap[p]]=v;hasUrlFields=true;}
+  }
+  var contactId=params.get('contact_id');
+  function esc(s){
+    if(!s)return s;
+    var d=document.createElement('div');
+    d.appendChild(document.createTextNode(s));
+    return d.innerHTML;
+  }
+  function doReplace(data){
+    var r={};
+    r['{{full_name}}']=esc(((data.firstName||'')+' '+(data.lastName||'')).trim()||((data.fullName||data.name)||''));
+    r['{{first_name}}']=esc(data.firstName||(data.name?data.name.split(' ')[0]:'')||'');
+    r['{{last_name}}']=esc(data.lastName||(data.name&&data.name.indexOf(' ')>-1?data.name.substring(data.name.indexOf(' ')+1):'')||'');
+    r['{{email}}']=esc(data.email||'');
+    r['{{phone}}']=esc(data.phone||'');
+    r['{{company}}']=esc(data.company||'');
+    r['{{city}}']=esc(data.city||'');
+    r['{{state}}']=esc(data.state||'');
+    r['{{country}}']=esc(data.country||'');
+    r['{{date}}']=new Date().toLocaleDateString();
+    r['{{time}}']=new Date().toLocaleTimeString();
+    r['{{location}}']=[data.city,data.state,data.country].filter(Boolean).join(', ');
+    r['{{tracking_id}}']=esc(data.trackingId||'');
+    r['{{lastClickedProduct}}']=esc(data.lastClickedProduct||'');
+    r['{{lastProductClickDate}}']=esc(data.lastProductClickDate||'');
+    r['{{lastClickedProductPrice}}']=esc(data.lastClickedProductPrice||'');
+    r['{{lastClickedProductURL}}']=esc(data.lastClickedProductURL||'');
+    r['{{productsClickedCount}}']=esc(data.productsClickedCount||'0');
+    r['{{ip_address}}']=esc(data.ipAddress||'');
+    r['{{ip}}']=esc(data.ipAddress||'');
+    if(data.customFields){
+      for(var k in data.customFields){
+        r['{{'+k+'}}']=esc(String(data.customFields[k]||''));
+      }
+    }
+    params.forEach(function(v,k){
+      if(!paramMap[k]&&k!=='contact_id'&&k!=='page_id'&&k.indexOf('utm_')!==0){
+        r['{{'+k+'}}']=esc(v);
+      }
+    });
+    var hasValues=false;
+    for(var key in r){if(r[key]){hasValues=true;break;}}
+    if(!hasValues)return;
+    var walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{
+      acceptNode:function(n){
+        var p=n.parentNode;
+        if(p&&skipTags[p.nodeName])return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var node;
+    while(node=walker.nextNode()){
+      var txt=node.nodeValue;
+      if(txt&&txt.indexOf('{{')>-1){
+        var changed=txt;
+        for(var ph in r){
+          if(r[ph]&&changed.indexOf(ph)>-1){
+            changed=changed.split(ph).join(r[ph]);
+          }
+        }
+        if(changed!==txt)node.nodeValue=changed;
+      }
+    }
+    var attrs=['value','placeholder','content','alt','title'];
+    attrs.forEach(function(attr){
+      var els=document.querySelectorAll('['+attr+'*="{{"]');
+      for(var i=0;i<els.length;i++){
+        var tag=els[i].tagName;
+        if(skipTags[tag])continue;
+        var val=els[i].getAttribute(attr);
+        if(val){
+          var nv=val;
+          for(var ph in r){
+            if(r[ph]&&nv.indexOf(ph)>-1){
+              nv=nv.split(ph).join(r[ph]);
+            }
+          }
+          if(nv!==val)els[i].setAttribute(attr,nv);
+        }
+      }
+    });
+  }
+  function run(){
+    if(contactId){
+      var xhr=new XMLHttpRequest();
+      xhr.open('GET','https://paymegpt.com/api/landing/context/'+encodeURIComponent(contactId)+'?page_id=2838');
+      xhr.onload=function(){
+        if(xhr.status===200){
+          try{
+            var resp=JSON.parse(xhr.responseText);
+            if(resp.success&&resp.contact){
+              var merged=resp.contact;
+              for(var k in fields){merged[k]=fields[k];}
+              doReplace(merged);
+              return;
+            }
+          }catch(e){}
+        }
+        if(hasUrlFields)doReplace(fields);
+      };
+      xhr.onerror=function(){if(hasUrlFields)doReplace(fields);};
+      xhr.send();
+    }else if(hasUrlFields){
+      doReplace(fields);
+    }
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',run);}
+  else{run();}
+})();
+</script>
+<script data-payment>
+(function(){
+  var slug='YtSnYh9SSa';
+  var apiBase='https://paymegpt.com';
+  function findEmail(){
+    var ids=['email','emailAddress','buyer-email','buyerEmail','user-email','userEmail','checkout-email','customer-email','contact-email'];
+    for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.value&&el.value.includes('@'))return el.value.trim();}
+    var inputs=document.querySelectorAll('input[type="email"],input[name*="email"],input[placeholder*="email"],input[placeholder*="Email"]');
+    for(var j=0;j<inputs.length;j++){if(inputs[j].value&&inputs[j].value.includes('@'))return inputs[j].value.trim();}
+    return '';
+  }
+  function findName(){
+    var ids=['name','fullName','full-name','buyer-name','buyerName','customer-name','userName','user-name'];
+    for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.value)return el.value.trim();}
+    var inputs=document.querySelectorAll('input[name*="name"]:not([name*="email"]):not([type="email"]),input[placeholder*="name"]:not([placeholder*="email"]):not([type="email"]),input[placeholder*="Name"]:not([type="email"])');
+    for(var j=0;j<inputs.length;j++){if(inputs[j].value)return inputs[j].value.trim();}
+    return '';
+  }
+  var __realProcessPayment=function(a,b,c,d,e){
+    var amountCents,email,productName,productDescription,customerName,quantity;
+    if(a&&typeof a==='object'){
+      amountCents=a.amountCents;email=a.email;productName=a.productName;
+      productDescription=a.productDescription||'';customerName=a.name||'';quantity=a.quantity||1;
+    }else{
+      amountCents=typeof a==='number'?a:0;productName=typeof b==='string'?b:'';
+      productDescription=typeof c==='string'?c:'';email='';customerName='';quantity=1;
+    }
+    if(!email)email=findEmail();
+    if(!customerName)customerName=findName();
+    if(!productName){alert('Product name is required.');return Promise.reject('no_product_name');}
+    if(!amountCents||amountCents<100){alert('Amount must be at least $1.00');return Promise.reject('invalid_amount');}
+    if(!email){alert('Please enter your email address.');return Promise.reject('no_email');}
+    var successBase=window.location.href.split('?')[0];
+    return fetch(apiBase+'/api/landing-pages/public/'+slug+'/payment/checkout',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email:email,name:customerName,amountCents:amountCents,productName:productName,productDescription:productDescription,quantity:quantity,successUrl:successBase+'?payment=success&product='+encodeURIComponent(productName)+'&session_id={CHECKOUT_SESSION_ID}',cancelUrl:successBase+'?payment=cancelled'})
+    }).then(function(r){return r.json();}).then(function(d){
+      if(d.checkoutUrl){window.location.href=d.checkoutUrl;}
+      else{alert(d.error||'Failed to process payment');throw new Error(d.error);}
+    });
+  };
+  Object.defineProperty(window,'__processPayment',{value:__realProcessPayment,writable:false,configurable:false});
+  document.addEventListener('DOMContentLoaded',function(){
+    var urlParams=new URLSearchParams(window.location.search);
+    if(urlParams.get('payment')==='success'){
+      var pName=urlParams.get('product')||'your item';
+      var overlay=document.createElement('div');overlay.id='payment-success-overlay';
+      overlay.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:999999;font-family:system-ui,-apple-system,sans-serif;';
+      overlay.innerHTML='<div style="background:white;border-radius:16px;padding:40px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.15);"><div style="width:64px;height:64px;border-radius:50%;background:#dcfce7;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><h2 style="margin:0 0 12px;font-size:24px;font-weight:700;color:#111827;">Payment Successful!</h2><p style="margin:0 0 24px;color:#6b7280;font-size:16px;">Thank you for purchasing '+pName.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'.</p><button onclick="document.getElementById(\'payment-success-overlay\').remove();window.history.replaceState({},\'\',window.location.pathname);" style="padding:12px 32px;font-size:16px;font-weight:600;background:#16a34a;color:white;border:none;border-radius:8px;cursor:pointer;">Continue</button></div>';
+      document.body.appendChild(overlay);
+    }
+  });
+})();
+</script>  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav id="mainNav">
+  <a href="#" class="nav-logo">
+    <img class="nav-logo-img" src="https://paymegpt.com/objects/quick-uploads/2/2d4ceff3912b39cf.webp" alt="BCRP Logo" onerror="this.style.display='none'">
+    <div>
+      <div class="nav-logo-text">BCRP</div>
+      <span class="nav-logo-sub">Beaufort County &middot; SC</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#election">2026 Election</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#involved">Get Involved</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#join" class="nav-cta">Join the BCRP</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#election" onclick="toggleMenu()">2026 Election</a>
+  <a href="#about" onclick="toggleMenu()">About</a>
+  <a href="#involved" onclick="toggleMenu()">Get Involved</a>
+  <a href="#contact" onclick="toggleMenu()">Contact</a>
+  <a href="#join" class="m-cta" onclick="toggleMenu()">Join the BCRP</a>
+</div>
+<section class="hero">
+  <div class="hero-video-wrap">
+    <video id="heroVideo" autoplay muted loop playsinline preload="auto" src="https://cms-artifacts.artlist.io/content/artgrid/footage-hd/622344_hdgraded_619936_170303USA0200018.mp4?d=true&filename=96481_American%20flag%20waving%20in%20a%20gentle%20breeze_By_Via_Films_Artlist_HD.mp4&Expires=1774966706&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=03KaeMHrN6mFTgO4ZAT7jecRgezvoDk4IsBpmajX65a~NYx2L7x5YV3WGVzLl4PAG-5XEv94WXku2gp-nrZNM1BNT7NVL7oQUFM8f3mjjXjJgP51UEMPdc6b-Ej4rdAIlqRTAgqujm63pTbcQK3u~Gs-fv5Og9ku29O1NQkUTm8TFdLRCgs96W~tQxVVc1CzXKsb86VHk3UOTYjbXHtYwVqQBaSjvZILDV-9-Zwu8pmc5XgZ83wdVGoNIYrxdsBJxC2GpSQdlX8at2103Rg95JcfQXTknCfK1fSfrs-TFtfWksH0f7JRJp7bhWd2BNFICz3ANBXYas95pUHu96Y9HA__"></video>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-accent-bar"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Beaufort County Republican Party &middot; South Carolina</div>
+    <h1 class="hero-title">The Road to<span class="italic-red">Victory</span></h1>
+    <div class="hero-subtitle">Starts Today &mdash; 2026 Election Ready</div>
+    <p class="hero-desc">The Beaufort County Republican Party is fighting for conservative values, election integrity, and the future of South Carolina. Join us as we build toward decisive wins in 2026.</p>
+    <div class="hero-buttons">
+      <a href="#join" class="btn-red">Join the BCRP</a>
+      <a href="#election" class="btn-white-outline">2026 Election</a>
+    </div>
+  </div>
+</section>
+<div class="stripe-bar"></div>
+<section class="stats-section" id="about">
+  <div class="stats-header reveal">
+    <div class="eyebrow eyebrow-gold">Our Impact</div>
+    <h2 class="section-title title-light">Impact You Can <span class="title-accent-gold">Measure</span></h2>
+  </div>
+  <div class="stats-grid reveal">
+    <div class="stat-card"><span class="stat-number" data-target="98000" data-suffix="+">0+</span><span class="stat-label">People Reached</span></div>
+    <div class="stat-card"><span class="stat-number" data-target="75" data-suffix="%">0%</span><span class="stat-label">Voter Turnout Accomplished</span></div>
+    <div class="stat-card"><span class="stat-number" data-target="1500" data-suffix="+">0+</span><span class="stat-label">Local Party Members</span></div>
+    <div class="stat-card"><span class="stat-number" data-target="150" data-suffix="+">0+</span><span class="stat-label">Events Held</span></div>
+    <div class="stat-card"><span class="stat-number" data-target="200" data-suffix="+">0+</span><span class="stat-label">Poll Watchers Recruited</span></div>
+    <div class="stat-card"><span class="stat-number" data-target="60" data-suffix="+">0+</span><span class="stat-label">Volunteers</span></div>
+  </div>
+</section>
+<section class="election-section" id="election">
+  <div class="election-inner">
+    <div class="election-text reveal">
+      <div class="eyebrow eyebrow-red" style="justify-content:flex-start;">Beaufort County &middot; South Carolina</div>
+      <h2 class="section-title title-dark">2026 Is Our <span class="title-accent-red">Moment</span></h2>
+      <p>Republican candidates have won every competitive election over the past five years. In 2026, we are doubling down — expanding our voter base, training more volunteers, and ensuring every conservative voice in Beaufort County is heard on election day.</p>
+      <a href="https://www.beaufortscgop.com/2026-election" target="_blank" class="btn-navy-outline">View 2026 Candidates</a>
+    </div>
+    <div class="reveal">
+      <div class="year-block">
+        <div class="year-ghost">2026</div>
+        <div class="year-overlay"><div class="year-overlay-title">Election<br>Season</div><div class="year-overlay-sub">Beaufort County, SC</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="mission-section">
+  <div class="mission-header reveal">
+    <div class="eyebrow eyebrow-red">Our Mission</div>
+    <h2 class="section-title title-dark">Preserving Freedom <span class="title-accent-red">Together</span></h2>
+  </div>
+  <div class="pillars-grid">
+    <div class="pillar-card reveal"><div class="pillar-bar"></div><div class="pillar-num">01</div><h3 class="pillar-title">Grow</h3><p class="pillar-text">Preserving conservative values at the grassroots level. Growing party membership through shared values and collaborative teamwork. Membership has increased over 400% under current leadership.</p></div>
+    <div class="pillar-card reveal"><div class="pillar-bar"></div><div class="pillar-num">02</div><h3 class="pillar-title">Win</h3><p class="pillar-text">With grassroots strength and informed voters, our candidates win elections — bringing good people and good ideas to government. Republicans have won every competitive race for five consecutive years.</p></div>
+    <div class="pillar-card reveal"><div class="pillar-bar"></div><div class="pillar-num">03</div><h3 class="pillar-title">Inform</h3><p class="pillar-text">Through engaging events, training, and content, our volunteers and members are informed and aware — not just on election day, but all the days in between.</p></div>
+    <div class="pillar-card reveal"><div class="pillar-bar"></div><div class="pillar-num">04</div><h3 class="pillar-title">Partner</h3><p class="pillar-text">We work closely with the SC State GOP and all local Republican clubs to collaborate and strategize so all Republican candidates succeed on election day.</p></div>
+  </div>
+</section>
+<section class="involved-section" id="involved">
+  <div class="involved-inner">
+    <div class="involved-header reveal">
+      <div class="eyebrow eyebrow-red">Take Action</div>
+      <h2 class="section-title title-dark">Get <span class="title-accent-red">Involved</span></h2>
+    </div>
+    <div class="involvement-grid">
+      <a href="https://www.beaufortscgop.com/joinus" target="_blank" class="involvement-card reveal">
+        <div class="inv-icon"><svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v2h20v-2c0-3.3-6.7-5-10-5z"/></svg></div>
+        <div class="inv-title">Become a Member</div>
+        <p class="inv-text">Join 1,500+ dedicated party members and help shape the future of conservative leadership in Beaufort County for 2026 and beyond.</p>
+        <div class="inv-arrow">Join Now <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </a>
+      <a href="https://www.beaufortscgop.com/getinvolved" target="_blank" class="involvement-card reveal">
+        <div class="inv-icon"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
+        <div class="inv-title">Volunteer</div>
+        <p class="inv-text">From phone banks to poll watching, your time makes a real difference. We have 60+ active volunteers and need more on the ground for 2026.</p>
+        <div class="inv-arrow">Volunteer <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </a>
+      <a href="https://www.beaufortscgop.com/events" target="_blank" class="involvement-card reveal">
+        <div class="inv-icon"><svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg></div>
+        <div class="inv-title">Attend Events</div>
+        <p class="inv-text">Over 150 events held. Stay engaged and informed. Our quarterly meetings and community events are open to all Republicans in Beaufort County.</p>
+        <div class="inv-arrow">View Events <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </a>
+    </div>
+  </div>
+</section>
+<section class="leadership-section">
+  <div class="leadership-inner">
+    <div class="leadership-header reveal">
+      <div class="eyebrow eyebrow-red">Leadership</div>
+      <h2 class="section-title title-dark">Meet Our <span class="title-accent-red">Chair</span></h2>
+    </div>
+    <div class="leader-spotlight reveal">
+      <div class="leader-photo-panel">
+        <img src="https://paymegpt.com/objects/quick-uploads/2/7c197aaa46a0eef0.png" alt="Kevin, BCRP Chairman">
+        <div class="leader-photo-name"><div class="leader-name">Kevin</div><div class="leader-role">Chairman, BCRP</div></div>
+      </div>
+      <div class="leader-content">
+        <p class="leader-bio">Born and raised in the New York City area, Kevin has always been passionate about politics. He has held multiple party roles since 2017 — Membership Chair, Treasurer, and interim-Chairman — before being unanimously elected Chairman in 2020. During his tenure, the party has reached significant milestones in membership, fundraising, and electoral success.</p>
+        <ul class="achievements-list">
+          <li>Increased party membership by more than 400%</li>
+          <li>Grew party cash on hand by more than 300%</li>
+          <li>Recruited over 200 poll watchers and workers to monitor elections</li>
+          <li>Implemented upgraded technologies for volunteer training and phone banks</li>
+          <li>Republican candidates have won every competitive election for 5+ years</li>
+        </ul>
+      </div>
+    </div>
+    <div class="board-grid reveal">
+      <div class="board-card"><div class="board-name">Shelley Yuhas</div><div class="board-role">First Vice Chair</div></div>
+      <div class="board-card"><div class="board-name">Allen Freemon</div><div class="board-role">Treasurer</div></div>
+      <div class="board-card"><div class="board-name">Xiaodan Li</div><div class="board-role">State Exec. Cmte.</div></div>
+      <div class="board-card"><div class="board-name">Don Lippucci</div><div class="board-role">Regional Dir. Central</div></div>
+      <div class="board-card"><div class="board-name">Jacob Dotson</div><div class="board-role">Regional Dir. South</div></div>
+      <div class="board-card"><div class="board-name">Sherrie Mikrut</div><div class="board-role">Recording Secretary</div></div>
+    </div>
+  </div>
+</section>
+<section class="join-section" id="join">
+  <div class="join-eyebrow">Beaufort County, South Carolina</div>
+  <h2 class="join-title">Let's Preserve Freedom<br><em>Together.</em></h2>
+  <p class="join-text">The 2026 election cycle is here. Your involvement makes every difference. Join the BCRP and stand with thousands of Beaufort County conservatives fighting for our community.</p>
+  <div class="join-buttons">
+    <a href="https://www.beaufortscgop.com/joinus" target="_blank" class="btn-cream">Join the BCRP Now</a>
+    <a href="https://www.beaufortscgop.com/contact" target="_blank" class="btn-outline-cream">Contact Us</a>
+  </div>
+</section>
+<section class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div class="reveal">
+      <div class="c-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+      <div class="c-label">Headquarters</div>
+      <div class="c-value">149 Riverwalk Blvd<br>Ridgeland, SC 29936</div>
+    </div>
+    <div class="reveal">
+      <div class="c-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg></div>
+      <div class="c-label">Official Website</div>
+      <div class="c-value"><a href="https://www.beaufortscgop.com" target="_blank">beaufortscgop.com</a></div>
+    </div>
+    <div class="reveal">
+      <div class="c-icon"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg></div>
+      <div class="c-label">Follow Us</div>
+      <div class="c-value">
+        <a href="https://nextdoor.com/pages/beaufort-county-republican-party-ridgeland-sc/" target="_blank">Nextdoor</a>
+        <a href="https://truthsocial.com/@BeaufortGOP" target="_blank">Truth Social &mdash; @BeaufortGOP</a>
+      </div>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="footer-logo-wrap">
+    <img class="footer-logo-img" src="https://paymegpt.com/objects/quick-uploads/2/2d4ceff3912b39cf.webp" alt="BCRP" onerror="this.style.display='none'">
+    <div class="footer-logo-text">BC<span>RP</span> &middot; Beaufort County Republican Party</div>
+  </div>
+  <ul class="footer-links">
+    <li><a href="https://www.beaufortscgop.com/s/10-23-2025-RNC-2024-Platform.pdf" target="_blank">RNC Platform</a></li>
+    <li><a href="https://sc.gop/about/#rules" target="_blank">SC GOP Rules</a></li>
+    <li><a href="https://www.beaufortscgop.com/s/07-07-2023-SCGOP-Platform.pdf" target="_blank">SC GOP Platform</a></li>
+    <li><a href="https://www.beaufortscgop.com/s/05-01-2025-BCRP-Rules-Adopted-at-Convention-FINAL-PDF.pdf" target="_blank">County Rules</a></li>
+    <li><a href="https://www.beaufortscgop.com/s/11-27-2023-BCRP-Meeting-Rules-FINAL-PDF.pdf" target="_blank">Meeting Rules</a></li>
+  </ul>
+  <div class="footer-copy">&copy; 2026 Beaufort County Republican Party &middot; All Rights Reserved</div>
+</footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
