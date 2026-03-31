@@ -1,26 +1,6 @@
 const nav = document.getElementById('mainNav');
   window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 60); });
   function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
-  const video = document.getElementById('heroVideo');
-  function tryPlay() {
-    video.muted = true;
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise.then(() => {
-        video.classList.add('loaded');
-      }).catch(() => {
-        video.classList.add('loaded');
-      });
-    }
-  }
-  video.addEventListener('loadeddata', () => { video.classList.add('loaded'); });
-  video.addEventListener('canplaythrough', tryPlay);
-  video.addEventListener('error', () => { video.classList.add('loaded'); });
-  document.addEventListener('DOMContentLoaded', () => {
-    video.load();
-    setTimeout(tryPlay, 1500);
-  });
-  setTimeout(() => video.classList.add('loaded'), 4000);
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => { if (entry.isIntersecting) { setTimeout(() => entry.target.classList.add('visible'), i * 70); observer.unobserve(entry.target); } });
