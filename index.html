@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+
+
+
+
+
+
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 
@@ -206,7 +213,9 @@
 </script>  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<nav id="mainNav" data-section="navbar">
+
+<!-- NAV -->
+<nav id="mainNav">
   <a href="#" class="nav-logo">
     <img class="nav-logo-img" src="https://paymegpt.com/objects/quick-uploads/2/2d4ceff3912b39cf.webp" alt="BCRP Logo" onerror="this.style.display='none'">
     <div>
@@ -223,6 +232,7 @@
   </ul>
   <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
 </nav>
+
 <div class="mobile-menu" id="mobileMenu">
   <a href="#election" onclick="toggleMenu()">2026 Election</a>
   <a href="#about" onclick="toggleMenu()">About</a>
@@ -230,12 +240,10 @@
   <a href="#contact" onclick="toggleMenu()">Contact</a>
   <a href="#join" class="m-cta" onclick="toggleMenu()">Join the BCRP</a>
 </div>
-<section class="hero" data-section="hero">
-  <div class="hero-video-wrap">
-    <video id="heroVideo" autoplay muted loop playsinline preload="auto">
-      <source src="https://cms-artifacts.artlist.io/content/artgrid/footage-hd/622344_hdgraded_619936_170303USA0200018.mp4?d=true&filename=96481_American%20flag%20waving%20in%20a%20gentle%20breeze_By_Via_Films_Artlist_HD.mp4&Expires=1774966706&Key-Pair-Id=K2ZDLYDZI2R1DF&Signature=03KaeMHrN6mFTgO4ZAT7jecRgezvoDk4IsBpmajX65a~NYx2L7x5YV3WGVzLl4PAG-5XEv94WXku2gp-nrZNM1BNT7NVL7oQUFM8f3mjjXjJgP51UEMPdc6b-Ej4rdAIlqRTAgqujm63pTbcQK3u~Gs-fv5Og9ku29O1NQkUTm8TFdLRCgs96W~tQxVVc1CzXKsb86VHk3UOTYjbXHtYwVqQBaSjvZILDV-9-Zwu8pmc5XgZ83wdVGoNIYrxdsBJxC2GpSQdlX8at2103Rg95JcfQXTknCfK1fSfrs-TFtfWksH0f7JRJp7bhWd2BNFICz3ANBXYas95pUHu96Y9HA__" type="video/mp4">
-    </video>
-  </div>
+
+<!-- HERO — static image background with Ken Burns effect -->
+<section class="hero">
+  <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
   <div class="hero-accent-bar"></div>
   <div class="hero-content">
@@ -249,8 +257,11 @@
     </div>
   </div>
 </section>
+
 <div class="stripe-bar"></div>
-<section class="stats-section" id="about" data-section="stats">
+
+<!-- STATS -->
+<section class="stats-section" id="about">
   <div class="stats-header reveal">
     <div class="eyebrow eyebrow-gold">Our Impact</div>
     <h2 class="section-title title-light">Impact You Can <span class="title-accent-gold">Measure</span></h2>
@@ -264,7 +275,9 @@
     <div class="stat-card"><span class="stat-number" data-target="60" data-suffix="+">0+</span><span class="stat-label">Volunteers</span></div>
   </div>
 </section>
-<section class="election-section" id="election" data-section="election">
+
+<!-- ELECTION 2026 -->
+<section class="election-section" id="election">
   <div class="election-inner">
     <div class="election-text reveal">
       <div class="eyebrow eyebrow-red" style="justify-content:flex-start;">Beaufort County &middot; South Carolina</div>
@@ -280,7 +293,9 @@
     </div>
   </div>
 </section>
-<section class="mission-section" data-section="mission">
+
+<!-- MISSION PILLARS -->
+<section class="mission-section">
   <div class="mission-header reveal">
     <div class="eyebrow eyebrow-red">Our Mission</div>
     <h2 class="section-title title-dark">Preserving Freedom <span class="title-accent-red">Together</span></h2>
@@ -292,7 +307,9 @@
     <div class="pillar-card reveal"><div class="pillar-bar"></div><div class="pillar-num">04</div><h3 class="pillar-title">Partner</h3><p class="pillar-text">We work closely with the SC State GOP and all local Republican clubs to collaborate and strategize so all Republican candidates succeed on election day.</p></div>
   </div>
 </section>
-<section class="involved-section" id="involved" data-section="get-involved">
+
+<!-- GET INVOLVED -->
+<section class="involved-section" id="involved">
   <div class="involved-inner">
     <div class="involved-header reveal">
       <div class="eyebrow eyebrow-red">Take Action</div>
@@ -320,7 +337,9 @@
     </div>
   </div>
 </section>
-<section class="leadership-section" data-section="leadership">
+
+<!-- LEADERSHIP -->
+<section class="leadership-section">
   <div class="leadership-inner">
     <div class="leadership-header reveal">
       <div class="eyebrow eyebrow-red">Leadership</div>
@@ -352,7 +371,9 @@
     </div>
   </div>
 </section>
-<section class="join-section" id="join" data-section="cta">
+
+<!-- JOIN -->
+<section class="join-section" id="join">
   <div class="join-eyebrow">Beaufort County, South Carolina</div>
   <h2 class="join-title">Let's Preserve Freedom<br><em>Together.</em></h2>
   <p class="join-text">The 2026 election cycle is here. Your involvement makes every difference. Join the BCRP and stand with thousands of Beaufort County conservatives fighting for our community.</p>
@@ -361,7 +382,9 @@
     <a href="https://www.beaufortscgop.com/contact" target="_blank" class="btn-outline-cream">Contact Us</a>
   </div>
 </section>
-<section class="contact-section" id="contact" data-section="contact">
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
   <div class="contact-inner">
     <div class="reveal">
       <div class="c-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
@@ -383,7 +406,9 @@
     </div>
   </div>
 </section>
-<footer data-section="footer">
+
+<!-- FOOTER -->
+<footer>
   <div class="footer-logo-wrap">
     <img class="footer-logo-img" src="https://paymegpt.com/objects/quick-uploads/2/2d4ceff3912b39cf.webp" alt="BCRP" onerror="this.style.display='none'">
     <div class="footer-logo-text">BC<span>RP</span> &middot; Beaufort County Republican Party</div>
@@ -397,6 +422,7 @@
   </ul>
   <div class="footer-copy">&copy; 2026 Beaufort County Republican Party &middot; All Rights Reserved</div>
 </footer>
+
 
   <script src="script.js"></script>
 </body>
